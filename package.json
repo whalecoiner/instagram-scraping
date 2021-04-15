@@ -28,9 +28,11 @@
   },
   "dependencies": {
     "@devhigley/test-proxy": "^1.1.1",
+    "https-proxy-agent": "^4.0.0",
     "node-fetch": "^2.6.1",
     "proxy-list-random": "^1.0.2",
     "proxy-lists": "^1.23.1",
+    "random-item": "^3.1.0",
     "random-useragent": "^0.5.0"
   }
 }

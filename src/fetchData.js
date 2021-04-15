@@ -1,7 +1,9 @@
 const fetch = require('node-fetch')
-const proxy = require(' proxy-list-random')
+const proxy = require('./proxy-list-random')
 const testProxy = require("@devhigley/test-proxy")
 const randomUseragent = require('random-useragent')
+const randomItem = require('random-item')
+const HttpsProxyAgent = require('https-proxy-agent')
 
 function validURL(str) {
   var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -14,21 +16,28 @@ function validURL(str) {
 }
 
 const fetchData = async (url) => {
-  if (!validURL(url)) throw new Error('Supplied URL is not valid')
+  if (!url) throw new Error('No URL argument supplied.')
+  if (!validURL(url)) throw new Error('Supplied URL is not valid.')
 
-  let proxies = await proxy()
-  const randomProxy = proxies[Math.floor(Math.random() * proxies.length)]
+  const proxies = await proxy()
+  console.log('proxies', typeof proxies)
+
+  const randomProxy = randomItem(proxies)
+
+  console.log('randomProxy: ', randomProxy)
 
   // check proxy
-  await testProxy(randomProxy)
+  // let testResult = await testProxy(randomProxy)
+
+  // console.log('passed?', testResult)
 
   // use a randomised proxy
-  const proxyAgent = new HttpsProxyAgent('randomProxy')
+  // const proxyAgent = new HttpsProxyAgent(randomProxy)
 
   // use a randomised useragent
 
   let fetchOptions = {
-    agent: proxyAgent,
+    // agent: proxyAgent,
     headers: {
       'User-Agent': randomUseragent.getRandom()
     }
